@@ -7,11 +7,11 @@ def get_current_date():
     return datetime.datetime.now().strftime("%YY%mM%D%Hh%Mm%Ss")
 
 # Display one or more images
-def show_2Dimages(images: list, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save: bool = False, save_path: str = "./"):
+def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save: bool = False, save_path: str = "./"):
     """Display one or more 2D images, and the type of picture is recommended as numpy.ndarray.
 
     Args:
-        images (np.ndarray):        Data list of images.
+        images (np.ndarray):        Data of images.
         names (list, optional):     List of image names. Defaults to None.
         title (str, optional):      General title. Defaults to None.
         shape (tuple, optional):    Canvas size. Defaults to None.
@@ -42,17 +42,27 @@ def show_2Dimages(images: list, names: list = None, title: str = None, shape: tu
             height = 3 * row 
         
         fig, axes = plt.subplots(row, col, figsize = (weight, height))
-        for i, image in enumerate(images):
-            axes[i].imshow(image, cmap = "gray")
-            if names != None:
-                axes[i].set_title(names[i])
-            axes[i].axis(axis)
         
-        if title != None: fig.suptitle(title)
+        if row == 1:
+            for i, image in enumerate(images):
+                axes[i].imshow(image, cmap = "gray")
+                if names != None: axes[i].set_title(names[i])
+                axes[i].axis(axis)
+        else:
+            i = 0
+            for r in range(row):
+                for c in range(col):
+                    axes[r][c].imshow(images[i], cmap = "gray")
+                    if names[i] != None: axes[r][c].set_title(names[i])
+                    axes[r][c].axis(axis)
+                    i += 1
         
-        if save == True:
-            if title == None: title = f"{get_current_date()}"
-            plt.savefig(os.path.join(save_path, title))
+    if title != None: fig.suptitle(title)
+        
+    if save == True:
+        title = f"{title}-{get_current_date()}"
+        print(f"{os.path.join(save_path, title)}.png")
+        plt.savefig(f"{os.path.join(save_path, title)}.png")
         
     plt.show()
     
