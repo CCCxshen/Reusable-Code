@@ -1,22 +1,33 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+import datetime
+
+def get_current_date():
+    return datetime.datetime.now().strftime("%YY%mM%D%Hh%Mm%Ss")
 
 # Display one or more images
-def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, shape: tuple = None, axis = 'off'):
+def show_2Dimages(images: list, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save: bool = False, save_path: str = "./"):
     """Display one or more 2D images, and the type of picture is recommended as numpy.ndarray.
 
     Args:
-        images (np.ndarray):     Data of images.
-        names (list, optional):  List of image names. Defaults to None.
-        title (str, optional):   General title. Defaults to None.
-        shape (tuple, optional): Canvas size. Defaults to None.
-        axis (str, optional):    Whether each image displays axes. Defaults to 'off'.
+        images (np.ndarray):        Data list of images.
+        names (list, optional):     List of image names. Defaults to None.
+        title (str, optional):      General title. Defaults to None.
+        shape (tuple, optional):    Canvas size. Defaults to None.
+        axis (str, optional):       Whether each image displays axes. Defaults to 'off'.
+        save (bool, optional):      Whether to save as a picture file. Defaults to False.
+        save_path (str, optional):  Save path. Defaults to "./".
     """
     cnt = len(images)
     if cnt == 1:
         plt.imshow(images[0], cmap = "gray")
         if names != None: plt.title(names[0])
         plt.axis(axis)
+        if save == True:
+            if names == None: title = f"{get_current_date()}"
+            else: title = names[0]
+            plt.savefig(os.path.join(save_path, title))
         
     else:
         row = 1
@@ -38,11 +49,16 @@ def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, sha
             axes[i].axis(axis)
         
         if title != None: fig.suptitle(title)
+        
+        if save == True:
+            if title == None: title = f"{get_current_date()}"
+            plt.savefig(os.path.join(save_path, title))
+        
     plt.show()
     
 
 # Box diagram showing one or more pictures
-def showBoxPicOf2DImages(images: np.ndarray, names: list = None, xlabel: str = None, ylabel: str = None, title: str = None):
+def showBoxPicOf2DImages(images: np.ndarray, names: list = None, xlabel: str = None, ylabel: str = None, title: str = None, save: bool = False, save_path: str = "./"):
     """Box diagram showing one or more 2D images, and the type of picture is recommended as numpy.ndarray.
 
     Args:
@@ -51,6 +67,8 @@ def showBoxPicOf2DImages(images: np.ndarray, names: list = None, xlabel: str = N
         xlabel (str, optional): name of x axis. Defaults to None.
         ylabel (str, optional): name of y axis. Defaults to None.
         title (str, optional):  General title.  Defaults to None.
+        save (bool, optional):      Whether to save as a picture file. Defaults to False.
+        save_path (str, optional):  Save path. Defaults to "./".
     """
 
     if names == None:
@@ -90,5 +108,9 @@ def showBoxPicOf2DImages(images: np.ndarray, names: list = None, xlabel: str = N
     ax.set_title(title, fontsize=12)
     ax.set_xlabel(xlabel, fontsize=10)
     ax.set_ylabel(ylabel, fontsize=10)
+    
+    if save == True:
+        if title == None: title = f"{get_current_date()}"
+        fig.savefig(os.path.join(save_path, title))
 
     plt.show()
