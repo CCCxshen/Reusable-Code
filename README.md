@@ -3,7 +3,7 @@
     <div style="width: 100%; height: 100px;"></div>
     <h1 style = "font-size: 80px;">  REUSABLE CODE</h1>
     <span>
-        <b>一些可以服用的代码<b>		
+        <b>一些可以复用的代码<b>		
     </span>
 </div>
 <div style="page-break-after: always;"></div>
