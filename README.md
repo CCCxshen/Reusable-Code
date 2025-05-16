@@ -23,6 +23,8 @@
 * `lightning_framework` pytorch lightning 框架
 * `torch_framework` torch 框架
 * `some_networks` 网络模型收集
+* `patDataset` 模式匹配Dataset
+* `indicator` 一些指标
 
 
 

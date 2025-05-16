@@ -1,25 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-import datetime
+import time
 
-def get_current_date():
-    return datetime.datetime.now().strftime("%YY%mM%D%Hh%Mm%Ss")
-
-
-def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save: bool = False, save_path: str = "./", show = True):
-    """展示一张或多张图片
-
-    Args:
-        images (np.ndarray): _description_
-        names (list, optional): _description_. Defaults to None.
-        title (str, optional): _description_. Defaults to None.
-        shape (tuple, optional): _description_. Defaults to None.
-        axis (str, optional): _description_. Defaults to 'off'.
-        save (bool, optional): _description_. Defaults to False.
-        save_path (str, optional): _description_. Defaults to "./".
-        show (bool, optional): _description_. Defaults to True.
-    """
+def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save_path: str = None, save_name: str = "file_name", show = True):
+    """展示一张或多张图片"""
     cnt = len(images)
     
     if cnt == 1:
@@ -57,6 +42,7 @@ def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, sha
             i = 0
             for r in range(row):
                 for c in range(col):
+                    if (r * row + c + 1) > cnt: break
                     if len(image.shape) == 2:
                         axes[r][c].imshow(images[i], cmap = "gray")
                     else:
@@ -67,30 +53,17 @@ def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, sha
                     i += 1
         
     if title != None: fig.suptitle(title)
-    if save  == True: 
+    if save_path != None: 
+        current_time = f"{time.time_ns()}"
         if not os.path.exists(save_path): os.makedirs(save_path)
-        if cnt == 1: plt.savefig(f"{os.path.join(save_path, get_current_date())}.png", dpi = 300)
-        else: fig.savefig(f"{os.path.join(save_path, get_current_date())}.png", dpi = 300)
+        if cnt == 1: plt.savefig("{}_{}.png".format(os.path.join(save_path, save_name), current_time), dpi = 300)
+        else: fig.savefig("{}_{}.png".format(os.path.join(save_path, save_name), current_time), dpi = 300)
     
     if show: plt.show()
     
     
-def boxplot_Compare_Two_Pic(arr_cal, arr_real, names = None, title = None, xlabel = None, ylabel = None, show = True, save = False, save_path = "./", theoretical_value = None, idx = None):
-    """箱型图，两张图对比
-
-    Args:
-        arr_cal (_type_): _description_
-        arr_real (_type_): _description_
-        names (_type_, optional): _description_. Defaults to None.
-        title (_type_, optional): _description_. Defaults to None.
-        xlabel (_type_, optional): _description_. Defaults to None.
-        ylabel (_type_, optional): _description_. Defaults to None.
-        show (bool, optional): _description_. Defaults to True.
-        save (bool, optional): _description_. Defaults to False.
-        save_path (str, optional): _description_. Defaults to "./".
-        theoretical_value (_type_, optional): _description_. Defaults to None.
-        idx (_type_, optional): _description_. Defaults to None.
-    """
+def boxplot_Compare_Two_Pic(arr_cal, arr_real, names = None, title = None, xlabel = None, ylabel = None, show = True, save_path = "./", save_name: str = "file_name", theoretical_value = None, idx = None):
+    """箱型图，两张图对比"""
     if names == None:
         names = ['data1', 'data2']
     if title == None:
@@ -137,26 +110,15 @@ def boxplot_Compare_Two_Pic(arr_cal, arr_real, names = None, title = None, xlabe
     ax.set_ylabel(ylabel, fontsize=10)
 
     if show: plt.show()
-    if save:
+    if save_path != None:
+        current_time = f"{time.time_ns()}"
         if not os.path.exists(save_path): os.makedirs(save_path)
-        fig.savefig(f"{os.path.join(save_path, get_current_date())}.png")
+        fig.savefig("{}_{}.png".format(os.path.join(save_path, save_name), current_time), dpi = 300)
     
     
    
-def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None, title = None, save = False, save_path = "./", show = True):
-    """箱型图，一张或多张图与标准值对比
-
-    Args:
-        arrs (_type_): _description_
-        std (_type_): _description_
-        shape (_type_, optional): _description_. Defaults to None.
-        names (_type_, optional): _description_. Defaults to None.
-        ylabels (_type_, optional): _description_. Defaults to None.
-        title (_type_, optional): _description_. Defaults to None.
-        save (bool, optional): _description_. Defaults to False.
-        save_path (str, optional): _description_. Defaults to "./".
-        show (bool, optional): _description_. Defaults to True.
-    """
+def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None, title = None, save_path: str = "./", save_name = "file_name", show = True):
+    """箱型图，一张或多张图与标准值对比"""
     cnt = len(arrs)
     
     if title == None: title = "Boxplot"
@@ -213,9 +175,10 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
 
                 ax[i].set_xticks([])
         else:
-            i = 1
+            i = 0
             for r in range(row):
                 for c in range(col):
+                    if (r * row + c + 1) > cnt: break
                     data = arrs[i].flatten()
 
                     ax[r][c].boxplot(data, vert=True)
@@ -237,9 +200,10 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
     if cnt == 1: plt.title(proTitle)
     else: fig.suptitle(proTitle)
     
-    if save == True: 
+    if save_path != None: 
+        current_time = f"{time.time_ns()}"
         if not os.path.exists(save_path): os.makedirs(save_path)
-        if cnt == 1: plt.savefig(f"{os.path.join(save_path, f'{title}-{get_current_date()}')}.png")
-        else: fig.savefig(f"{os.path.join(save_path, f'{title}-{get_current_date()}')}.png")
+        if cnt == 1: plt.savefig("{}_{}.png".format(os.path.join(save_path, save_name), current_time), dpi = 300)
+        else: fig.savefig("{}_{}.png".format(os.path.join(save_path, save_name), current_time), dpi = 300)
     
     if show == True: plt.show()
