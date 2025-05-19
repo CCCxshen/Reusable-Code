@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import time
+from matplotlib.ticker import FormatStrFormatter
 
 def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save_path: str = None, save_name: str = "file_name", show = True):
     """展示一张或多张图片"""
@@ -81,6 +82,7 @@ def boxplot_Compare_Two_Pic(arr_cal, arr_real, names = None, title = None, xlabe
 
     # 绘制箱线图
     fig, ax = plt.subplots()
+    plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
     boxplot = ax.boxplot([arr_cal, arr_real], labels=names)
     # 设置字体大小
     small_font = {'size': 8}
@@ -97,11 +99,11 @@ def boxplot_Compare_Two_Pic(arr_cal, arr_real, names = None, title = None, xlabe
         whisker_max = boxplot['whiskers'][2 * i + 1].get_ydata()[1]
         mid.append(median)
 
-        ax.text(i + 1.1, q1, f'Q1: {q1:.6f}', fontdict=small_font)
-        ax.text(i + 1.1, q3, f'Q3: {q3:.6f}', fontdict=small_font)
+        ax.text(0.9, q1, f'{q1:.6f} :Q1', verticalalignment='top', horizontalalignment = 'right', color='g')
+        ax.text(0.9, q3, f'{q3:.6f} :Q3', verticalalignment='bottom', horizontalalignment = 'right', color='g')
         ax.text(i + 1.1, median, f'Median: {median:.6f}', fontdict=small_font)
-        ax.text(i + 1.1, whisker_min, f'Min: {whisker_min:.6f}', fontdict=small_font)
-        ax.text(i + 1.1, whisker_max, f'Max: {whisker_max:.6f}', fontdict=small_font)
+        # ax.text(i + 1.1, whisker_min, f'Min: {whisker_min:.6f}', fontdict=small_font)
+        # ax.text(i + 1.1, whisker_max, f'Max: {whisker_max:.6f}', fontdict=small_font)
 
     title = f"{title} | Median difference: {abs(mid[0]-mid[1]):.6f}"
     if theoretical_value != None: title = f"{title}--The theoretical_value is {theoretical_value[idx]:.6f}"
@@ -128,15 +130,16 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
     if cnt == 1:
         data = arrs[0].flatten()
         plt.boxplot(data, vert=True)
-
+        plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
+        
         median = np.median(data)
         q1 = np.percentile(data, 25)
         q3 = np.percentile(data, 75)
 
         # 在图上显示中位数、上下四分位数
         plt.text(1.1, median, f'Median: {median:.6f}', verticalalignment='center', color='r')
-        plt.text(1.1, q1, f'Q1: {q1:.6f}', verticalalignment='center', color='g')
-        plt.text(1.1, q3, f'Q3: {q3:.6f}', verticalalignment='center', color='g')
+        plt.text(0.9, q1, f'{q1:.6f} :Q1', verticalalignment='top', horizontalalignment = 'right', color='g')
+        plt.text(0.9, q3, f'{q3:.6f} :Q3', verticalalignment='bottom', horizontalalignment = 'right', color='g')
 
         # 隐藏 x 轴刻度
         plt.xticks([])
@@ -161,6 +164,7 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
             for i in range(0, cnt):
                 data = arrs[i].flatten()
 
+                ax[i].yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
                 ax[i].boxplot(data, vert=True)
 
                 median = np.median(data)
@@ -168,8 +172,8 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
                 q3 = np.percentile(data, 75)
 
                 ax[i].text(1.1, median, f'Median: {median:.6f}', verticalalignment='center', color='r')
-                ax[i].text(1.1, q1, f'Q1: {q1:.6f}', verticalalignment='center', color='g')
-                ax[i].text(1.1, q3, f'Q3: {q3:.6f}', verticalalignment='center', color='g')
+                ax[i].text(0.9, q1, f'{q1:.6f} :Q1', verticalalignment='top', horizontalalignment = 'right', color='g')
+                ax[i].text(0.9, q3, f'{q3:.6f} :Q3', verticalalignment='bottom', horizontalalignment = 'right', color='g')
 
                 ax[i].set_title(f'{names[i]} \n Median:{median: .6f} | distance:{abs(std - median): .6f}')
 
@@ -181,6 +185,7 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
                     if (r * row + c + 1) > cnt: break
                     data = arrs[i].flatten()
 
+                    ax[r][c].yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
                     ax[r][c].boxplot(data, vert=True)
 
                     median = np.median(data)
@@ -188,8 +193,8 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
                     q3 = np.percentile(data, 75)
 
                     ax[r][c].text(1.1, median, f'Median: {median:.6f}', verticalalignment='center', color='r')
-                    ax[r][c].text(1.1, q1, f'Q1: {q1:.6f}', verticalalignment='center', color='g')
-                    ax[r][c].text(1.1, q3, f'Q3: {q3:.6f}', verticalalignment='center', color='g')
+                    ax[r][c].text(0.9, q1, f'{q1:.6f} :Q1', verticalalignment='top', horizontalalignment = 'right', color='g')
+                    ax[r][c].text(0.9, q3, f'{q3:.6f} :Q3', verticalalignment='bottom', horizontalalignment = 'right', color='g')
 
                     ax[r][c].set_title(f'{names[i]} \n Median:{median: .6f} | distance:{abs(std - median): .6f}')
 
