@@ -1,0 +1,7 @@
+// 主要配置
+{
+    "seed": 131313,
+    "gpu": [0],
+    
+    "root_dir": "/data0/fhzhang/xcshen/Denoising/BCP_Denoising"
+}

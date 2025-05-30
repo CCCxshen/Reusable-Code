@@ -4,12 +4,13 @@ import os
 import time
 from matplotlib.ticker import FormatStrFormatter
 
-def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save_path: str = None, save_name: str = "file_name", show = True):
+def show_2Dimages(images: list, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save_path: str = None, save_name: str = "file_name", show = True):
     """展示一张或多张图片"""
+    images = np.array(images)
     cnt = len(images)
     
     if cnt == 1:
-        if len(image.shape) == 2:
+        if len(images[0].shape) == 2:
             plt.imshow(images[0], cmap = "gray")
         else:
             plt.imshow(images[0])
@@ -43,13 +44,13 @@ def show_2Dimages(images: np.ndarray, names: list = None, title: str = None, sha
             i = 0
             for r in range(row):
                 for c in range(col):
-                    if (r * row + c + 1) > cnt: break
-                    if len(image.shape) == 2:
-                        axes[r][c].imshow(images[i], cmap = "gray")
-                    else:
-                        axes[r][c].imshow(image)
-                    
-                    if names != None: axes[r][c].set_title(names[i])
+                    if (r * col + c + 1) <= cnt: 
+                        if len(images[i].shape) == 2:
+                            axes[r][c].imshow(images[i], cmap = "gray")
+                        else:
+                            axes[r][c].imshow(images)
+                        
+                        if names != None: axes[r][c].set_title(names[i])
                     axes[r][c].axis(axis)
                     i += 1
         
@@ -182,7 +183,9 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
             i = 0
             for r in range(row):
                 for c in range(col):
-                    if (r * row + c + 1) > cnt: break
+                    if (r * col + c + 1) > cnt: 
+                        ax[r][c].axis("off")
+                        break
                     data = arrs[i].flatten()
 
                     ax[r][c].yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
@@ -212,3 +215,81 @@ def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None
         else: fig.savefig("{}_{}.png".format(os.path.join(save_path, save_name), current_time), dpi = 300)
     
     if show == True: plt.show()
+    
+    
+    
+def show_lines(datas: list[1], x_labels: list = [], y_labels: list = [], subtitle: list = [], title: str = None, shape: tuple = None,  save_path: str = None, save_name: str = "file_name", show = True):
+    """展示一张或多张图片"""
+    datas = np.array(datas)
+    cnt = len(datas)
+    
+    while len(x_labels) < cnt:
+        x_labels.append("X value")
+        
+    while len(y_labels) < cnt:
+        y_labels.append("Y value")
+        
+    idx = 1
+    while len(subtitle) < cnt:
+        subtitle.append(f"line {idx}")
+        idx += 1
+    
+    if cnt == 1:
+        plt.plot(list(range(len(datas[0]))), datas[0], 'b-', linewidth = 1)
+        if title != None: plt.title(title)
+        plt.xlabel(x_labels[0])
+        plt.ylabel(y_labels[0])
+        plt.grid(True)
+         
+    else:
+        row = 1
+        col = cnt
+        weight = 5 * cnt
+        height = 4
+        
+        if shape != None:
+            row = shape[0]
+            col = shape[1]
+            weight = 5 * col 
+            height = 4 * row 
+        
+        fig, axes = plt.subplots(row, col, figsize = (weight, height))
+        fig.subplots_adjust(hspace=0.3, wspace=0.3)
+        if row == 1 or col == 1:
+            for i, data in enumerate(datas):
+                axes[i].plot(list(range(len(data))), data, 'b-', linewidth = 1)
+                axes[i].set_title(subtitle[i])
+                axes[i].set_xlabel(x_labels[i])
+                axes[i].set_ylabel(y_labels[i])
+                axes[i].grid(True)
+
+        else:
+            i = 0
+            for r in range(row):
+                for c in range(col):
+                    if (r * col + c + 1) <= cnt: 
+                        axes[r][c].plot(list(range(len(datas[i]))), datas[i], 'b-', linewidth = 1)
+                        axes[r][c].set_title(subtitle[i])
+                        axes[r][c].set_xlabel(x_labels[i])
+                        axes[r][c].set_ylabel(y_labels[i])
+                        axes[r][c].grid(True)
+                    else: axes[r][c].axis('off')
+                    i += 1
+        
+        if title != None: fig.suptitle(title)
+    if save_path != None: 
+        current_time = f"{time.time_ns()}"
+        if not os.path.exists(save_path): os.makedirs(save_path)
+        if cnt == 1: plt.savefig("{}_{}.png".format(os.path.join(save_path, save_name), current_time), dpi = 300)
+        else: fig.savefig("{}_{}.png".format(os.path.join(save_path, save_name), current_time), dpi = 300)
+    
+    if show: plt.show()
+
+if __name__ == "__main__":
+    a = [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 2, 1, 3, 4, 5]
+    b = [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 2, 1, 3, 4, 5]
+    c = [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 2, 1, 3, 4, 5]
+    d = [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 2, 1, 3, 4, 5]
+    e = [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 2, 1, 3, 4, 5]
+    f = [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 2, 1, 3, 4, 5]
+    show_lines([a, b, c, d, e], x_labels=["epoch"], y_labels=["mse"], title = "MSE", save_path="./")

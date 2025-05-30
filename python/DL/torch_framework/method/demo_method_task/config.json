@@ -1,0 +1,52 @@
+{
+    "task_name": "demo_method_task",
+    "fuction_path_of_method_import": "method.demo_method_task.demo_method_task_function",
+    "data_root_dir": "/data0/fhzhang/data/mayo_processed_data",
+    "train": true,
+    "test": true,
+    "is_continue": false,
+    "ckpt": null,
+    
+    // "train_data_ID": ["L067", "L096", "L109", "L143", "L192", "L286", "L291"],
+    "train_data_ID": ["L067"],
+    "train_regex_pattern": [
+        "_[a-zA-Z0-9]+_input.npy",
+        "_[a-zA-Z0-9]+_target.npy"
+    ],
+    "val_data_ID":   ["L310"],
+    "val_regex_pattern": [
+        "_[a-zA-Z0-9]+_input.npy",
+        "_[a-zA-Z0-9]+_target.npy"
+    ],
+    "test_data_ID":  ["L333", "L506"],
+    "test_regex_pattern": [
+        "_[a-zA-Z0-9]+_input.npy",
+        "_[a-zA-Z0-9]+_target.npy"
+    ],
+
+    "model": ["UNet2D"],
+    "input_channels": 1,
+    "class_nums": 1,
+
+    "optimizer": ["Adam"],
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "weight_decay": 0.0001,
+    "optimizer_corresponding_model_parameters": [0],
+
+    "lr_scheduler": ["CosineAnnealingLR"],
+    "T_max": 50,
+    "min_learning_rate": 0.00001,
+    "lr_scheduler_corresponding_optimizer": [0],
+
+    "train_batch_size": 50,
+    "val_batch_size": 50,
+    "test_batch_size": 20,
+    "learning_rate": [0.001],
+    "lr_corresponding_optimizer": [0],
+    
+    "epochs": 5,
+
+    "monitoring_indicators": "psnr",
+    "supervision_strategy": "max"
+}

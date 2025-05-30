@@ -1,0 +1,72 @@
+import os, sys
+from utils.utils import *
+from utils.model_utils import *
+from dataset.patDataset import *
+from torch.utils.data import DataLoader
+
+
+def test(config):
+    
+    recorder = config["recorder"]
+    
+    test_dataset = patDataset(
+        data_dir = config["data_root_dir"],
+        is_train = True,
+        regex_pattern = [f"({'|'.join(config['test_data_ID'])}){x}" for x in config["test_regex_pattern"]],
+        process_fun   = config["method_function"].test_dataset_step,
+        args = config
+    )
+    test_dataloader = DataLoader(
+        dataset = test_dataset,
+        batch_size = config["test_batch_size"],
+        shuffle = True
+    )
+    
+    
+    len_test_dataset    = len(test_dataset)
+    len_test_dataloader = len(test_dataloader)
+    
+    recorder.message(
+        f"""
+        \rtask name: {config['task_name']}
+        \ruse_device: {config['device']}
+        \rModel: {config['model']}
+        \rTest batch size: {config['test_batch_size']}
+        \rNumber of test data: {len_test_dataset}
+        \rstart test
+        """
+    )
+    
+    models = create_model(config)
+    
+    models, _, _, _, info = load_model(
+        models = models,
+        config = config
+    )
+    recorder.message(info)
+    
+    # test
+    for step, data in enumerate(test_dataloader):
+        test_step_indicator = config["method_function"].test_step(models, data, step, config)
+        test_step_indicator = dictionary_addition(
+            A = test_step_indicator,
+            B = dictionary_division(test_step_indicator, len_test_dataloader)
+        )
+        recorder.message(f"step {step}/{len_test_dataloader - 1}, {dict2str(test_step_indicator)}", end = "\r", stage = "test", state = "test")
+
+    recorder.message(f"{dict2str(test_step_indicator)}", stage = "test", state = "test")
+    
+    recorder.message(f"Training completed!")
+         
+        
+        
+                
+        
+        
+        
+        
+        
+        
+        
+        
+    

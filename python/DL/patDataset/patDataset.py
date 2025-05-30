@@ -4,10 +4,11 @@ import numpy as np
 import os, re
 
 class patDataset(Dataset):
-    def __init__(self, data_dir, is_train, regex_pattern = [r'.*'], process_fun = None):
+    def __init__(self, data_dir, is_train, regex_pattern = [r'.*'], process_fun = None, args = None):
         self.data_dir = os.path.abspath(data_dir)
         self.is_train = is_train
         self.process_fun = process_fun
+        self.args = args
         
         regex = [re.compile(x) for x in regex_pattern]
         self.data_names = [natsorted([x for x in os.listdir(self.data_dir) if y.match(x)]) for y in regex]
@@ -17,9 +18,9 @@ class patDataset(Dataset):
         return self.data_paths.shape[1]
     
     def __getitem__(self, index):
-        data_path = np.array([x[index - 1] for x in self.data_paths])
+        data_path = np.array([x[index] for x in self.data_paths])
 
         if self.process_fun != None:
-            data = self.process_fun(data_path, self.is_train)
+            data = self.process_fun(data_path, self.is_train, self.args)
 
         return data

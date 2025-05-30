@@ -1,0 +1,24 @@
+2025/05/30-16:59:56.474@demo_method_task- test: step 0/22, mse: 0.0757, psnr: 4.6087, mae: 0.0757, vif: 0.0783, gen: 0.0313
+2025/05/30-16:59:57.027@demo_method_task- test: step 1/22, mse: 0.0522, psnr: 6.2609, mae: 0.0252, vif: 0.0870, gen: 0.0200
+2025/05/30-16:59:57.579@demo_method_task- test: step 2/22, mse: 0.0678, psnr: 7.3913, mae: 0.0104, vif: 0.0278, gen: 0.0704
+2025/05/30-16:59:58.142@demo_method_task- test: step 3/22, mse: 0.0635, psnr: 6.1739, mae: 0.0635, vif: 0.0235, gen: 0.0365
+2025/05/30-16:59:58.693@demo_method_task- test: step 4/22, mse: 0.0330, psnr: 1.3913, mae: 0.0461, vif: 0.0052, gen: 0.0122
+2025/05/30-16:59:59.244@demo_method_task- test: step 5/22, mse: 0.0322, psnr: 0.6087, mae: 0.0635, vif: 0.0261, gen: 0.0435
+2025/05/30-16:59:59.802@demo_method_task- test: step 6/22, mse: 0.0704, psnr: 6.3478, mae: 0.0626, vif: 0.0426, gen: 0.0713
+2025/05/30-17:00:00.360@demo_method_task- test: step 7/22, mse: 0.0096, psnr: 8.6087, mae: 0.0609, vif: 0.0400, gen: 0.0670
+2025/05/30-17:00:00.918@demo_method_task- test: step 8/22, mse: 0.0861, psnr: 3.6522, mae: 0.0852, vif: 0.0191, gen: 0.0078
+2025/05/30-17:00:01.473@demo_method_task- test: step 9/22, mse: 0.0765, psnr: 5.3913, mae: 0.0313, vif: 0.0374, gen: 0.0478
+2025/05/30-17:00:02.029@demo_method_task- test: step 10/22, mse: 0.0583, psnr: 0.2609, mae: 0.0183, vif: 0.0209, gen: 0.0270
+2025/05/30-17:00:02.586@demo_method_task- test: step 11/22, mse: 0.0461, psnr: 4.5217, mae: 0.0513, vif: 0.0591, gen: 0.0791
+2025/05/30-17:00:03.142@demo_method_task- test: step 12/22, mse: 0.0835, psnr: 2.0000, mae: 0.0513, vif: 0.0513, gen: 0.0391
+2025/05/30-17:00:03.700@demo_method_task- test: step 13/22, mse: 0.0530, psnr: 3.5652, mae: 0.0330, vif: 0.0174, gen: 0.0626
+2025/05/30-17:00:04.257@demo_method_task- test: step 14/22, mse: 0.0165, psnr: 2.8696, mae: 0.0791, vif: 0.0417, gen: 0.0774
+2025/05/30-17:00:04.813@demo_method_task- test: step 15/22, mse: 0.0852, psnr: 3.3043, mae: 0.0765, vif: 0.0270, gen: 0.0330
+2025/05/30-17:00:05.370@demo_method_task- test: step 16/22, mse: 0.0374, psnr: 4.7826, mae: 0.0165, vif: 0.0174, gen: 0.0400
+2025/05/30-17:00:05.926@demo_method_task- test: step 17/22, mse: 0.0765, psnr: 3.9130, mae: 0.0826, vif: 0.0009, gen: 0.0035
+2025/05/30-17:00:06.484@demo_method_task- test: step 18/22, mse: 0.0696, psnr: 4.6087, mae: 0.0583, vif: 0.0217, gen: 0.0643
+2025/05/30-17:00:07.041@demo_method_task- test: step 19/22, mse: 0.0843, psnr: 6.5217, mae: 0.0052, vif: 0.0843, gen: 0.0626
+2025/05/30-17:00:07.598@demo_method_task- test: step 20/22, mse: 0.0061, psnr: 2.5217, mae: 0.0461, vif: 0.0870, gen: 0.0174
+2025/05/30-17:00:08.155@demo_method_task- test: step 21/22, mse: 0.0339, psnr: 8.0870, mae: 0.0070, vif: 0.0661, gen: 0.0617
+2025/05/30-17:00:08.700@demo_method_task- test: step 22/22, mse: 0.0817, psnr: 8.3478, mae: 0.0330, vif: 0.0426, gen: 0.0104
+2025/05/30-17:00:08.701@demo_method_task- test: mse: 0.0817, psnr: 8.3478, mae: 0.0330, vif: 0.0426, gen: 0.0104

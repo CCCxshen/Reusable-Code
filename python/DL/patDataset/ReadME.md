@@ -46,6 +46,7 @@ data_dir/
 * process_fun = None：数据的处理函数
   * process_fun函数需要外部实现，其默认参数第一个为本次数据的路径，第二个参数表示数据用于的阶段。
   * process_fun的返回值应是一个数据或容器，不可为多个。
+* args = None: 其他参数
 
 > [!tip]
 >
@@ -65,27 +66,33 @@ data_dir/
 	L002_0_output.npy
 	L002_1_output.npy
 
-def my_process_fun(data_paths, is_train, etc_params):
+task_configs = {
+	"use_device": "..."
+}
+
+def my_process_fun(data_paths, is_train, etc_params, args):
     # 有两个规则，则data_paths为[规则1第index数据的路径，规则2第index数据的路径]
-    input_data = np.load(data_paths[0])
-    output_data = np.load(data_paths[1])
+    input_data  = np.load(data_paths[0])	# 读取相应数据
+    output_data = np.load(data_paths[1])	# 读取相应数据
     
-    if is_train: # 训练阶段的数据预处理
-    else:        # 测试阶段的数据预处理
+    if is_train: ... # 训练阶段的数据预处理
+    else:        ... # 测试阶段的数据预处理
     
+    # 返回为一个字典
     return {
-        'a': input_data,
-    	'b': output_data
+        'a': torch.from_numpy(input_data).float().to(args["use_devise"]),
+    	'b': torch.from_numpy(output_data).float().to(args["use_devise"])
     }
 
 dataset = patDataset(
-	data_dir = "data_dir",
-	is_train = "True",
+	data_dir      = "data_dir",
+	is_train      = "True",
 	regex_pattern = [
 		r"(L001|L002)_[a-ZA-Z0-9]_input.npy",	# 获取规则符合的数据
 		r"(L001|L002)_[a-ZA-Z0-9]_output.npy"   # 获取规则符合的数据
 	],
-    process_fun = my_process_fun
+    process_fun   = my_process_fun,
+	args          = task_configs
 )
 ```
 
