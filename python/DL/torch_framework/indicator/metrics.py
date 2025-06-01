@@ -19,7 +19,7 @@ class MetricsCalculator:
         self.data_range = MAX_HU - MIN_HU
         self.device = device
 
-        self.lpips_fn = lpips.LPIPS(net='vgg').to(self.device)
+        self.lpips_fn = lpips.LPIPS(net='vgg', verbose=False).to(self.device)
         # self.lpips_fn = lpips.LPIPS(net='vgg').cuda()
         self.vif_fn = VIFLoss()
 

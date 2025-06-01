@@ -1,11 +1,11 @@
-
-import os, math
+import os, math, shutil, sys, time
 import numpy as np
 import matplotlib.pyplot as plt
 from utils.data_utils import *
 from datetime import datetime
 from colorama import init, Fore, Back, Style
 from matplotlib.ticker import MaxNLocator
+
 
 def save_slices(
         inputs,
@@ -49,31 +49,56 @@ def create_dirs(root_dir, method):
 
  
 class Recorder:
-    def __init__(self, stage_paths, task_name, task_path):
+    def __init__(self, stage_paths, method_name, method_path, DDP):
         self.stage_paths = stage_paths
-        self.task_name = task_name
-        self.task_path = task_path
+        self.method_name = method_name
+        self.method_path = method_path
+        self.DDP = DDP
         init(autoreset=True)
         
-    def message(self, info, state = None, end = "\n", stage = "train"):
+        
+    def message(self, info, write_into = None, end = "\n", stage = "train", ignore_DDP = False, ignore_width = False):
+        if (ignore_DDP == False) and (self.DDP == True) and (int(os.environ["RANK"]) != 0): return 
+        
         formatted_time = datetime.now().strftime("%Y/%m/%d-%H:%M:%S.%f")[:-3]
-        text = f"\033[2K\033[0G{Fore.CYAN + formatted_time + Fore.RESET}@{Fore.GREEN + self.task_name + Fore.RESET}-{Fore.RED + stage.rjust(5) + Fore.RESET}: {info}"
-        print(text, end = end)
+        terminal_width = shutil.get_terminal_size().columns
+
+        prefix = f"\033[2K\033[0G{Fore.CYAN + formatted_time + Fore.RESET}@{Fore.GREEN + self.method_name + Fore.RESET}-{Fore.RED + stage.rjust(5) + Fore.RESET}> "
+        print_info = None
         
-        if state != None:
-            with open(os.path.join(self.stage_paths[state], "log.txt"), "a") as file:
-                file.write(f"{formatted_time}@{self.task_name}-{stage.rjust(5)}: {info}\n")
+        if ignore_width == False:
+            split_info = info.split(",")
+            
+            for ed in range(len(split_info), 0, -1):
+                if len(prefix) + len(','.join(split_info[0:ed])) - 34 <= terminal_width:
+                    print_info = prefix + ','.join(split_info[0:ed])
+                    if ed < len(split_info):
+                        print_info = print_info + " ..."
+                    break
+            
+            if print_info == None:
+                print_info = f"\033[2K\033[0G{Fore.LIGHTRED_EX + 'Width is too narrow!' + Fore.RESET}"
+                
+        else: print_info = prefix + info
         
-        with open(os.path.join(self.task_path, "log_summary.txt"), "a") as file:
-            file.write(f"{formatted_time}@{self.task_name}-{stage.rjust(5)}: {info}\n")
+        print(print_info, end = end)
         
-    def draw(self, dictData: dict, x_labels: list = [], y_labels: list = [], subtitle: list = [], title: str = None, shape: tuple = None,  save_path: str = None, save_name: str = "file_name"):
+        if write_into != None:
+            with open(os.path.join(self.stage_paths[write_into], "log.txt"), "a") as file:
+                file.write(f"{formatted_time}@{self.method_name}-{stage.rjust(5)}: {info}\n")
+        
+        with open(os.path.join(self.method_path, "log_summary.txt"), "a") as file:
+            file.write(f"{formatted_time}@{self.method_name}-{stage.rjust(5)}: {info}\n")
+        
+    def draw(self, dictData: dict, x_labels: list = [], y_labels: list = [], subtitle: list = [], title: str = None, shape: tuple = None,  save_path: str = None, save_name: str = "file_name", ignore_DDP = False):
+        if (ignore_DDP == False) and (self.DDP == True) and (int(os.environ["RANK"]) != 0): return 
+        plt.close()
         
         datas = []
 
         if subtitle == []:
             for key, value in dictData.items():
-                subtitle.append(key)
+                subtitle.append(key)    
                 datas.append(value)
         else: 
             for key, value in dictData.items():
@@ -153,5 +178,12 @@ class Recorder:
             else: fig.savefig("{}.png".format(os.path.join(save_path, save_name)), dpi = 300)
         
         # if show: plt.show()
-        plt.close()
         
+        
+        
+if __name__ == "__main__":
+    a = Recorder("1", "taks_name", "1")
+    i = 1
+    while True:
+        time.sleep(0.5)
+        a.message(f"epoch {i}/1000, step {i}/{1000}, l1_loss: 0.0037, rmse: 153.1180, psnr: 22.4237, ssim: 0.3277, lpips: 0.1234, vif: 1.1111, nqm: 0.1234", end = "\r") 

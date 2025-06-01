@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import torch
 import json
 import os
 
@@ -14,17 +15,20 @@ def parseJSON(conf_path):
     return config
 
 def dictionary_addition(A: dict, B: dict):
-    for key, value in B.items():
-        if key not in A: A[key] = value
-        else: A[key] += value
+    dictA = A.copy()
+    dictB = B.copy()
+    for key, value in dictB.items():
+        if key not in dictA: dictA[key] = value
+        else: dictA[key] += value
             
-    return A
+    return dictA
 
 def dictionary_division(A: dict, val: int):
-    for key, value in A.items():
-        A[key] /= val
+    dictA = A.copy()
+    for key, value in dictA.items():
+        dictA[key] /= val
             
-    return A
+    return dictA
 
 def dict2str(dictdata: dict, decimal_places = 4):
     text = ""
@@ -33,10 +37,14 @@ def dict2str(dictdata: dict, decimal_places = 4):
     return text[:-2]
 
 def dict_append(A: dict, B: dict):
-    for key, value in B.items():
-        if key not in A: A[key] = [value] 
-        else: A[key].append(value)
-    return A
+    dictA = A.copy()
+    dictB = B.copy()
+    for key, value in dictB.items():
+        if isinstance(value, torch.Tensor):
+            value = value.detach().cpu().numpy()
+        if key not in dictA: dictA[key] = [value] 
+        else: dictA[key].append(value)
+    return dictA
 
 def check(a, b, strategy):
     if strategy == "max":
@@ -45,8 +53,6 @@ def check(a, b, strategy):
         return a < b
 
 if __name__ == "__main__":
-    A = {}
-    B = {"A": 1, "B": 1}
-    A = dict_append(A, B)
-    A = dict_append(A, B)
+    A = {"A": 10}
+    dictionary_division(A, 10)
     print(A)

@@ -86,14 +86,14 @@ def save_model(models, optimizers = None, epoch = 0, indicator = {}, config = No
         "indicator": indicator
     }
     if save_name == None: save_name = f"model_epoch{epoch}_{config['monitoring_indicators']}={indicator[config['monitoring_indicators']]:.4f}.pth"
-    save_path = os.path.join(config["root_dir"], "log", config["task_name"], "checkpoint", save_name)
+    save_path = os.path.join(config["root_dir"], "log", config["method_name"], "checkpoint", save_name)
     
     torch.save(checkpoint, save_path)
     
     return f"The model has been saved to {save_path}"
     
 def load_model(models = None, optimizers = None, config = None):
-    if config["ckpt"] == None: load_path = os.path.join(config["root_dir"], "log", config["task_name"], "checkpoint", "best_model.pth")
+    if config["ckpt"] == None: load_path = os.path.join(config["root_dir"], "log", config["method_name"], "checkpoint", "best_model.pth")
     else: load_path = config["ckpt"]
     
     state_dict = torch.load(load_path)

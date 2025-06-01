@@ -6,6 +6,7 @@ from matplotlib.ticker import FormatStrFormatter
 
 def show_2Dimages(images: list, names: list = None, title: str = None, shape: tuple = None, axis = 'off', save_path: str = None, save_name: str = "file_name", show = True):
     """展示一张或多张图片"""
+    plt.close()
     cnt = len(images)
     
     if cnt == 1:
@@ -20,13 +21,13 @@ def show_2Dimages(images: list, names: list = None, title: str = None, shape: tu
         row = 1
         col = cnt
         weight = 4 * cnt
-        height = 4
+        height = 5
         
         if shape != None:
             row = shape[0]
             col = shape[1]
-            weight = 3 * col 
-            height = 3 * row 
+            weight = 4 * col 
+            height = 5 * row 
         
         fig, axes = plt.subplots(row, col, figsize = (weight, height))
         
@@ -65,6 +66,7 @@ def show_2Dimages(images: list, names: list = None, title: str = None, shape: tu
     
 def boxplot_Compare_Two_Pic(arr_cal, arr_real, names = None, title = None, xlabel = None, ylabel = None, show = True, save_path = "./", save_name: str = "file_name", theoretical_value = None, idx = None):
     """箱型图，两张图对比"""
+    plt.close()
     if names == None:
         names = ['data1', 'data2']
     if title == None:
@@ -121,6 +123,7 @@ def boxplot_Compare_Two_Pic(arr_cal, arr_real, names = None, title = None, xlabe
    
 def boxplot_Compare_Stdval(arrs, std, shape = None, names = None, ylabels = None, title = None, save_path: str = "./", save_name = "file_name", show = True):
     """箱型图，一张或多张图与标准值对比"""
+    plt.close()
     cnt = len(arrs)
     
     if title == None: title = "Boxplot"

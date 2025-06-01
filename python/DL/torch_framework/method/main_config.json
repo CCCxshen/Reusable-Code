@@ -1,7 +1,8 @@
 // 主要配置
 {
     "seed": 131313,
-    "gpu": [0],
+    "DDP": true,
+    "gpu": [1, 3],
     
-    "root_dir": "/data0/fhzhang/xcshen/Denoising/BCP_Denoising"
+    "root_dir": "/data2/sxc/Denoising/My"
 }

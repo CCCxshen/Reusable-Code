@@ -23,7 +23,7 @@ def train_step(models, optimizers, data, step, epoch_idx, config):
     time.sleep(0.5)
     return {"l1_loss": random.randint(0, 100) / 100}
 
-def val_step(models, optimizers, data, step, epoch_idx, config):
+def val_step(models, data, step, epoch_idx, config):
     time.sleep(0.5)
     return {
         "l1_loss": random.randint(0, 100) / 100

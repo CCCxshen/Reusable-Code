@@ -1,14 +1,24 @@
 2025/05/30-16:59:12.483@demo_method_task-train: 
-        task name: demo_method_task
-        use_device: cuda
-        Model: ['UNet2D']
-        Optimizer: ['Adam']
-        Learning rate scheduler: ['CosineAnnealingLR']
-        Train batch size: 50
-        Val batch size: 50
-        Learning rate: [0.001]
-        Number of training data: 224
-        Number of validation data: 214
+        method name
+task name: demo_method_task
+        
+use_device: cuda
+        
+Model: ['UNet2D']
+        
+Optimizer: ['Adam']
+        
+Learning rate scheduler: ['CosineAnnealingLR']
+        
+Train batch size: 50
+        
+Val batch size: 50
+        
+Learning rate: [0.001]
+        
+Number of training data: 224
+        
+Number of validation data: 214
         
 2025/05/30-16:59:15.939@demo_method_task-train: Do not load the model, it will be retrained
 2025/05/30-16:59:16.567@demo_method_task-train: epoch 0 / 4, step 0 / 4, l1_loss: 0.1640
@@ -65,7 +75,7 @@
 2025/05/30-16:59:48.904@demo_method_task-train: epoch 4 / 4, step 1 / 4, l1_loss: 0.1280
 2025/05/30-16:59:49.528@demo_method_task-train: epoch 4 / 4, step 2 / 4, l1_loss: 0.1740
 2025/05/30-16:59:50.149@demo_method_task-train: epoch 4 / 4, step 3 / 4, l1_loss: 0.0700
-2025/05/30-16:59:50.710@demo_method_task-train: epoch 4 / 4, step 4 / 4, l1_loss: 0.1100
+2025/05/3method name0.710@demo_method_task-train: epoch 4 / 4, step 4 / 4, l1_loss: 0.1100
 2025/05/30-16:59:50.711@demo_method_task-train: epoch 4, l1_loss: 0.1100
 2025/05/30-16:59:51.326@demo_method_task-  val: epoch 4/4, step 0/4, l1_loss: 0.0260, mse: 0.2000, psnr: 5.2000, mae: 0.0340, vif: 0.1860, gen: 0.1300
 2025/05/30-16:59:51.944@demo_method_task-  val: epoch 4/4, step 1/4, l1_loss: 0.0580, mse: 0.1520, psnr: 10.6000, mae: 0.0060, vif: 0.1760, gen: 0.1320
@@ -75,12 +85,18 @@
 2025/05/30-16:59:53.723@demo_method_task-  val: epoch 4, l1_loss: 0.0260, mse: 0.0560, psnr: 19.2000, mae: 0.0340, vif: 0.1660, gen: 0.0820
 2025/05/30-16:59:55.711@demo_method_task-train: Training completed!
 2025/05/30-16:59:55.781@demo_method_task-train: 
-        task name: demo_method_task
-        use_device: cuda
-        Model: ['UNet2D']
-        Test batch size: 20
-        Number of test data: 455
-        start test
+        
+task name: demo_method_task
+        
+use_device: cuda
+        
+Model: ['UNet2D']
+        
+Test batch size: 20
+        
+Number of test data: 455
+        
+start test
         
 2025/05/30-16:59:55.928@demo_method_task-train: Load the model from /data0/fhzhang/xcshen/Denoising/BCP_Denoising/log/demo_method_task/checkpoint/best_model.pth
 2025/05/30-16:59:56.474@demo_method_task- test: step 0/22, mse: 0.0757, psnr: 4.6087, mae: 0.0757, vif: 0.0783, gen: 0.0313

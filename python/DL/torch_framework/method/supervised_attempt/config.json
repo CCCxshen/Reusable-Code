@@ -1,11 +1,11 @@
 {
-    "method_name": "demo_method_task",
-    "fuction_path_of_method_import": "method.demo_method_task.demo_method_task_function",
-    "data_root_dir": "/data0/fhzhang/data/mayo_processed_data",
+    "method_name": "supervised_attempt",
+    "fuction_path_of_method_import": "method.supervised_attempt.supervised_attempt_mayo_function",
+    "data_root_dir": "/data2/sxc/Denoising/data_processed/mayo",
     "train": true,
     "test": true,
-    "is_continue": false,
-    "ckpt": null,
+    "is_continue": true,
+    "ckpt": "log/supervised_attempt/checkpoint/model_epoch2_psnr=12.0031.pth",
     
     // "train_data_ID": ["L067", "L096", "L109", "L143", "L192", "L286", "L291"],
     "train_data_ID": ["L067"],
@@ -13,7 +13,8 @@
         "_[a-zA-Z0-9]+_input.npy",
         "_[a-zA-Z0-9]+_target.npy"
     ],
-    "val_data_ID":   ["L310"],
+    // "val_data_ID":   ["L310"],
+    "val_data_ID":   ["L067"],
     "val_regex_pattern": [
         "_[a-zA-Z0-9]+_input.npy",
         "_[a-zA-Z0-9]+_target.npy"
@@ -39,13 +40,13 @@
     "min_learning_rate": 0.00001,
     "lr_scheduler_corresponding_optimizer": [0],
 
-    "train_batch_size": 50,
-    "val_batch_size": 50,
-    "test_batch_size": 20,
-    "learning_rate": [0.001],
+    "train_batch_size": 4,
+    "val_batch_size": 4,
+    "test_batch_size": 1,
+    "learning_rate": [0.0001],
     "lr_corresponding_optimizer": [0],
     
-    "epochs": 5,
+    "epochs": 500,
 
     "monitoring_indicators": "psnr",
     "supervision_strategy": "max"
