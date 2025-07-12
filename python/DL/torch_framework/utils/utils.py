@@ -1,4 +1,6 @@
 from collections import OrderedDict
+from datetime import datetime
+import numpy as np
 import torch
 import json
 import os
@@ -13,6 +15,26 @@ def parseJSON(conf_path):
             
     config = json.loads(json_str, object_pairs_hook=OrderedDict)
     return config
+
+def format_timedelta(delta):
+    """将timedelta对象格式化为 时:分:秒.毫秒 的形式"""
+    total_seconds = delta.total_seconds()
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, remainder = divmod(remainder, 60)
+    seconds = remainder
+    milliseconds = delta.microseconds // 1000
+    if hours > 0:
+        return f"{int(hours):02d}h:{int(minutes):02d}m:{int(seconds):02d}s.{milliseconds:03d}ms"
+    if hours == 0:
+        return f"{int(minutes):02d}m:{int(seconds):02d}s.{milliseconds:03d}ms"
+
+def time_utils(train_start_time, epoch_start_time, epoch_end_time, remain_epoch = 1):
+    train_spent_time = epoch_end_time - train_start_time
+    epoch_spent_time = epoch_end_time - epoch_start_time
+    remain_spent_time = (epoch_end_time - epoch_start_time) * remain_epoch
+    
+    return format_timedelta(train_spent_time), format_timedelta(epoch_spent_time), format_timedelta(remain_spent_time)
+    
 
 def dictionary_addition(A: dict, B: dict):
     dictA = A.copy()
@@ -42,8 +64,8 @@ def dict_append(A: dict, B: dict):
     for key, value in dictB.items():
         if isinstance(value, torch.Tensor):
             value = value.detach().cpu().numpy()
-        if key not in dictA: dictA[key] = [value] 
-        else: dictA[key].append(value)
+        if key not in dictA: dictA[key] = np.array([value]) 
+        else: dictA[key] = np.append(dictA[key], value)
     return dictA
 
 def check(a, b, strategy):

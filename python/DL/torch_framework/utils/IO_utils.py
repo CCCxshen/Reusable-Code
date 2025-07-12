@@ -5,6 +5,8 @@ from utils.data_utils import *
 from datetime import datetime
 from colorama import init, Fore, Back, Style
 from matplotlib.ticker import MaxNLocator
+import json
+import pickle
 
 
 def save_slices(
@@ -40,19 +42,41 @@ def save_slices(
     plt.imsave(os.path.join(out_dir, f'{name_prefix}_{epoch}_{idx}_gt.png'), (gt * 255.).astype(np.uint8), cmap='gray')
 
 
-def create_dirs(root_dir, method):
-	os.makedirs(os.path.join(root_dir, "log", method), exist_ok=True)
-	os.makedirs(os.path.join(root_dir, "log", method, "val"), exist_ok=True)
-	os.makedirs(os.path.join(root_dir, "log", method, "test"), exist_ok=True)
-	os.makedirs(os.path.join(root_dir, "log", method, "checkpoint"), exist_ok=True)
+def create_dirs(config):
+    root_dir = config["root_dir"]
+    method   = config["method_name"]
+    
+    config["log_path"]  = os.path.join(root_dir, "log", method)
+    config["val_path"]  = os.path.join(root_dir, "log", method, "val")
+    config["test_path"] = os.path.join(root_dir, "log", method, "test")
+    config["checkpoint_path"] = os.path.join(root_dir, "log", method, "checkpoint")
+    config["etc_path"]  = os.path.join(root_dir, "log", method, "etc")
+    
+    os.makedirs(config["log_path"], exist_ok=True)
+    os.makedirs(config["val_path"], exist_ok=True)
+    os.makedirs(config["test_path"], exist_ok=True)
+    os.makedirs(config["checkpoint_path"], exist_ok=True)
+    os.makedirs(config["etc_path"], exist_ok=True)
+    
+
+def save_dict_to_file(dict, filename):
+    np.savez(filename, **dict)
+
+def load_dict_from_file(filename):
+    if not os.path.exists(filename):
+        return {}
+    
+    loaded = np.load(filename, allow_pickle=True)
+    loaded_dict = {key: loaded[key] for key in loaded}
+    return loaded_dict
 
 
- 
+
 class Recorder:
-    def __init__(self, stage_paths, method_name, method_path, DDP):
+    def __init__(self, stage_paths, method_name, method_log_path, DDP):
         self.stage_paths = stage_paths
         self.method_name = method_name
-        self.method_path = method_path
+        self.method_path = method_log_path
         self.DDP = DDP
         init(autoreset=True)
         
@@ -83,12 +107,13 @@ class Recorder:
         
         print(print_info, end = end)
         
-        if write_into != None:
+        if write_into != None and write_into != "never":
             with open(os.path.join(self.stage_paths[write_into], "log.txt"), "a") as file:
                 file.write(f"{formatted_time}@{self.method_name}-{stage.rjust(5)}: {info}\n")
         
-        with open(os.path.join(self.method_path, "log_summary.txt"), "a") as file:
-            file.write(f"{formatted_time}@{self.method_name}-{stage.rjust(5)}: {info}\n")
+        if write_into != "never":
+            with open(os.path.join(self.method_path, "log_summary.txt"), "a") as file:
+                file.write(f"{formatted_time}@{self.method_name}-{stage.rjust(5)}: {info}\n")
         
     def draw(self, dictData: dict, x_labels: list = [], y_labels: list = [], subtitle: list = [], title: str = None, shape: tuple = None,  save_path: str = None, save_name: str = "file_name", ignore_DDP = False):
         if (ignore_DDP == False) and (self.DDP == True) and (int(os.environ["RANK"]) != 0): return 

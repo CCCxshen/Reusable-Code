@@ -11,10 +11,10 @@ def show_2Dimages(images: list, names: list = None, title: str = None, shape: tu
     cnt = len(images)
     
     if cnt == 1:
-        if len(images[0].shape) == 2:
+        if len(images[0].shape) == 2 or images[0].shape[0] == 1:
             plt.imshow(images[0], cmap = "gray")
         else:
-            plt.imshow(images[0])
+            plt.imshow(images[0].transpose(1, 2, 0))
         if names != None: plt.title(names[0])
         plt.axis(axis)  
          
@@ -34,10 +34,10 @@ def show_2Dimages(images: list, names: list = None, title: str = None, shape: tu
         
         if row == 1 or col == 1:
             for i, image in enumerate(images):
-                if len(image.shape) == 2:
+                if len(image.shape) == 2 or images[0].shape[0] == 1:
                     axes[i].imshow(image, cmap = "gray")
                 else:
-                    axes[i].imshow(image)
+                    axes[i].imshow(image.transpose(1, 2, 0))
                 
                 if names != None: axes[i].set_title(names[i])
                 axes[i].axis(axis)
@@ -46,10 +46,10 @@ def show_2Dimages(images: list, names: list = None, title: str = None, shape: tu
             for r in range(row):
                 for c in range(col):
                     if (r * col + c + 1) <= cnt: 
-                        if len(images[i].shape) == 2:
+                        if len(images[i].shape) == 2 or images[0].shape[0] == 1:
                             axes[r][c].imshow(images[i], cmap = "gray")
                         else:
-                            axes[r][c].imshow(images)
+                            axes[r][c].imshow(images.transpose(1, 2, 0))
                         
                         if names != None: axes[r][c].set_title(names[i])
                     axes[r][c].axis(axis)

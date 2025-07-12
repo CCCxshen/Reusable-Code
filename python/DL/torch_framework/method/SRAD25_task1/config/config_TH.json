@@ -1,0 +1,76 @@
+{
+    "DDP": false,
+    "gpu": [3],
+    "seed": 131313,
+
+    "method_name": "SRAD25_task1_TH",
+    "fuction_path_of_method_import": "method.SRAD25_task1.code.SRAD_task1_function",
+    
+    "train": true,
+    "test": true,
+    "is_continue": true,
+    "ckpt": "last",
+    "strict_loading_model_weight": false,
+
+    //---------------------
+    //MR处理: mr / 2000
+    //CT处理: (CT + 1024) / 4024
+    "train_data_root_dir": "/data0/xcshen/data/dataprep/proce_Task1/AB/slice",
+    "train_data_ID": ["1THA002","1THA003","1THA004","1THA005","1THA010","1THA011","1THA013","1THA015","1THA016","1THA017","1THA018","1THA019","1THA022","    1THA026","1THA028","1THA031","1THA032","1THA034","1THA039","1THA040","1THA041","1THA045","1THA046","1THA047","1THA048","1THA049","1THA050","1    THA051","1THA052","1THA054","1THA055","1THA056","1THA058","1THA060","1THA203","1THA205","1THA207","1THA212","1THA213","1THA217","1THA221","1T    HA223","1THA224","1THA228","1THA230","1THA231","1THA234","1THA235","1THA237","1THA243","1THA244","1THA246","1THA248","1THA249","1THA250","1TH    A251","1THA252","1THA253","1THA255","1THA256","1THA257","1THA258","1THA259","1THA260","1THA261","1THA262","1THA265","1THA266","1THA267","1THA    268","1THA269","1THA270","1THA271","1THA272","1THA273","1THA275","1THA276","1THA277","1THA279","1THA280","1THA281","1THA282","1THA283","1THA2    84","1THA286","1THA288","1THA289","1THA291","1THA292","1THA293","1THB002","1THB003","1THB004","1THB006","1THB008","1THB011","1THB015","1THB01    6","1THB017","1THB019","1THB021","1THB022","1THB023","1THB027","1THB028","1THB029","1THB031","1THB033","1THB034","1THB035","1THB037","1THB038    ","1THB043","1THB045","1THB046","1THB047","1THB048","1THB049","1THB050","1THB052","1THB053","1THB054","1THB057","1THB058","1THB060","1THB062"    ,"1THB063","1THB067","1THB068","1THB069","1THB072","1THB073","1THB074","1THB076","1THB078","1THB095","1THB100","1THB103","1THB106","1THB114",    "1THB119","1THB120","1THB121","1THB122","1THB124","1THB126","1THB133","1THB134","1THB135","1THB138","1THB141","1THB143","1THB149","1THB150","    1THB151","1THB165","1THB179","1THB191","1THB193","1THB195","1THB196","1THB199","1THB200","1THB201","1THB202","1THB205","1THB207","1THB210","1    THB211","1THB212","1THB214","1THB215","1THB216","1THB217","1THB218","1THB220","1THB221","1THB222","1THB224", "1THB225"],
+    "train_regex_pattern": [
+        "_[a-zA-Z0-9]+_input.npy",
+        "_[a-zA-Z0-9]+_target.npy",
+        "_[a-zA-Z0-9]+_mask.npy"
+    ],
+    "train_batch_size": 96,
+    "train_patch_size": 128,
+
+    "val_data_root_dir": "/data0/xcshen/data/dataprep/proce_Task1/AB/slice",
+    "val_data_ID":   ["1THA001"],
+    "val_regex_pattern": [
+        "_[a-zA-Z0-9]+_input.npy",
+        "_[a-zA-Z0-9]+_target.npy",
+        "_[a-zA-Z0-9]+_mask.npy"
+    ],
+    "val_batch_size": 1,
+
+    // 3d数据
+    "test_data_root_dir": "/data0/xcshen/data/synthRAD2025_Task1_Val_Input/Task1/HN",
+    // "test_data_ID":  ["1ABA011"],
+    "test_data_ID": ["1THB032", "1THA023", "1THA216", "1THB204", "1THA014", "1THB025", "1THB012", "1THB014", "1THB036", "1THB209", "1THA007", "1THA202", "1THA226", "1THB155", "1THB018", "1THB219", "1THB142", "1THB186", "1THA053", "1THB075", "1THA215", "1THA219", "1THA204", "1THA008", "1THA036", "1THA025", "1THA222", "1THB125"],
+    "test_regex_pattern": [
+        // "_[a-zA-Z0-9]+_input.npy",
+        // "_[a-zA-Z0-9]+_target.npy",
+        // "_[a-zA-Z0-9]+_mask.npy"
+        ".*"
+    ],
+    "test_batch_size": 1,
+
+    "model": ["UNet2D_SRAD"],
+    "input_channels": 1,
+    "class_nums": 1,
+
+    "optimizer": ["Adam"],
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "weight_decay": 0.001,
+    "optimizer_corresponding_model_parameters": [0],
+
+    "lr_scheduler": ["CosineAnnealingLR"],
+    "T_max": 300,
+    "min_learning_rate": 0.00001,
+    "lr_scheduler_corresponding_optimizer": [0],
+
+    "learning_rate": [0.0001],
+    "lr_corresponding_optimizer": [0],
+    
+    "epochs": 2000,
+    
+    "monitoring_indicators": "psnr",
+    "supervision_strategy": "max",
+    "save_every_model": true,
+
+    "indicator_name": "MRtoCT",
+    "min_val": -1024,
+    "max_val": 3072
+}

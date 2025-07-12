@@ -11,7 +11,6 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-
 class MetricsCalculator:
     def __init__(self, MIN_HU, MAX_HU, device='cuda'):
         self.MIN_HU = MIN_HU

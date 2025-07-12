@@ -1,0 +1,7 @@
+/log/*/checkpoint
+/log/*/test/*.png
+/log/*/val/*.png
+
+/*/__pycache__
+/__pycache__
+/etc

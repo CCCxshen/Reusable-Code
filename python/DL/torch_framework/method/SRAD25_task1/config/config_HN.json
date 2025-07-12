@@ -1,0 +1,76 @@
+{
+    "DDP": false,
+    "gpu": [3],
+    "seed": 131313,
+
+    "method_name": "SRAD25_task1_HN",
+    "fuction_path_of_method_import": "method.SRAD25_task1.code.SRAD_task1_function",
+    
+    "train": true,
+    "test": true,
+    "is_continue": true,
+    "ckpt": "last",
+    "strict_loading_model_weight": false,
+
+    //---------------------
+    //MR处理: mr / 2000
+    //CT处理: (CT + 1024) / 4024
+    "train_data_root_dir": "/data0/xcshen/data/dataprep/proce_Task1/AB/slice",
+    "train_data_ID": ["1HNA001","1HNA004","1HNA006","1HNA008","1HNA010","1HNA012","1HNA013","1HNA014","1HNA015","1HNA018","1HNA019","1HNA021","1HNA023","1HNA025","    1HNA026","1HNA028","1HNA029","1HNA030","1HNA031","1HNA032","1HNA033","1HNA034","1HNA035","1HNA036","1HNA037","1HNA038","1HNA039","1HNA040","1    HNA041","1HNA042","1HNA043","1HNA045","1HNA047","1HNA048","1HNA049","1HNA051","1HNA053","1HNA056","1HNA059","1HNA060","1HNA061","1HNA066","1H    NA067","1HNA068","1HNA069","1HNA071","1HNA072","1HNA077","1HNA082","1HNA084","1HNA085","1HNA086","1HNA089","1HNA090","1HNA091","1HNA093","1HN    A095","1HNA096","1HNA097","1HNA098","1HNA099","1HNA100","1HNA102","1HNA103","1HNA104","1HNA105","1HNA106","1HNA107","1HNA108","1HNA109","1HNA    110","1HNA113","1HNA115","1HNA116","1HNA117","1HNA119","1HNA120","1HNA121","1HNA124","1HNA126","1HNA129","1HNA130","1HNA132","1HNA133","1HNA1    35","1HNA136","1HNA138","1HNA139","1HNA141","1HNA142","1HNA143","1HNC001","1HNC002","1HNC003","1HNC004","1HNC005","1HNC007","1HNC008","1HNC01    2","1HNC014","1HNC017","1HNC019","1HNC020","1HNC021","1HNC022","1HNC023","1HNC025","1HNC029","1HNC031","1HNC035","1HNC036","1HNC037","1HNC038    ","1HNC039","1HNC040","1HNC043","1HNC045","1HNC046","1HNC050","1HNC061","1HNC066","1HNC067","1HNC068","1HNC071","1HNC072","1HNC073","1HNC076"    ,"1HNC082","1HNC083","1HNC084","1HNC085","1HNC087","1HNC088","1HNC094","1HNC098","1HNC099","1HNC101","1HNC102","1HNC103","1HNC104","1HNC105",    "1HNC107","1HNC109","1HNC110","1HNC111","1HNC112","1HNC114","1HNC117","1HNC118","1HNC120","1HNC121","1HNC124","1HNC125","1HNC127"],
+    "train_regex_pattern": [
+        "_[a-zA-Z0-9]+_input.npy",
+        "_[a-zA-Z0-9]+_target.npy",
+        "_[a-zA-Z0-9]+_mask.npy"
+    ],
+    "train_batch_size": 96,
+    "train_patch_size": 128,
+
+    "val_data_root_dir": "/data0/xcshen/data/dataprep/proce_Task1/AB/slice",
+    "val_data_ID":   ["1HNC128"],
+    "val_regex_pattern": [
+        "_[a-zA-Z0-9]+_input.npy",
+        "_[a-zA-Z0-9]+_target.npy",
+        "_[a-zA-Z0-9]+_mask.npy"
+    ],
+    "val_batch_size": 1,
+
+    // 3d数据
+    "test_data_root_dir": "/data0/xcshen/data/synthRAD2025_Task1_Val_Input/Task1/HN",
+    // "test_data_ID":  ["1ABA011"],
+    "test_data_ID": ["1HNC126", "1HNC064", "1HNC015", "1HNA002", "1HNA073", "1HNC100", "1HNA062", "1HNC129", "1HNA005", "1HNA092", "1HNA094", "1HNC055", "1HNA052", "1HNA063", "1HNA081", "1HNA017", "1HNC063", "1HNA078", "1HNC052", "1HNA020", "1HNA054", "1HNC048", "1HNA070", "1HNC093"],
+    "test_regex_pattern": [
+        // "_[a-zA-Z0-9]+_input.npy",
+        // "_[a-zA-Z0-9]+_target.npy",
+        // "_[a-zA-Z0-9]+_mask.npy"
+        ".*"
+    ],
+    "test_batch_size": 1,
+
+    "model": ["UNet2D_SRAD"],
+    "input_channels": 1,
+    "class_nums": 1,
+
+    "optimizer": ["Adam"],
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "weight_decay": 0.001,
+    "optimizer_corresponding_model_parameters": [0],
+
+    "lr_scheduler": ["CosineAnnealingLR"],
+    "T_max": 300,
+    "min_learning_rate": 0.00001,
+    "lr_scheduler_corresponding_optimizer": [0],
+
+    "learning_rate": [0.0001],
+    "lr_corresponding_optimizer": [0],
+    
+    "epochs": 2000,
+    
+    "monitoring_indicators": "psnr",
+    "supervision_strategy": "max",
+    "save_every_model": true,
+
+    "indicator_name": "MRtoCT",
+    "min_val": -1024,
+    "max_val": 3072
+}
